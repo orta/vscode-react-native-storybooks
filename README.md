@@ -2,7 +2,15 @@
 
 Adds a command to inline show the Storybook page inline inside VS Code. 
 
-Basically jams http://localhost:9001 into a tab that you can have on the side.
+Basically jams http://localhost:9001 into a tab that you can have on the side. 
+
+## How do I use it?
+
+Once installed, open the command palette and do: 
+
+`> Show Storybooks`
+
+🎉
 
 ## Features
 
