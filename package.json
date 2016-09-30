@@ -8,8 +8,7 @@
         "vscode": "^1.5.0"
     },
     "categories": [
-        "Storybooks",
-        "React Native"
+        "Other"
     ],
     "activationEvents": [
         "onCommand:extension.showStorybookPreview"
