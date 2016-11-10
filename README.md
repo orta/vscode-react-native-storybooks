@@ -12,6 +12,10 @@ Once installed, open the command palette and do:
 
 🎉
 
+## Configuration
+
+ - `react-native-storybooks.port`: number (default: 9001)
+
 ## Features
 
 ![https://github.com/orta/vscode-react-native-storybooks/raw/master/preview.png](https://github.com/orta/vscode-react-native-storybooks/raw/master/preview.png)

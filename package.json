@@ -28,6 +28,17 @@
                     "when": "resourceLangId == javascript"
                 }
             ]
+        },
+        "configuration": {
+            "type": "object",
+            "title": "Configuration",
+            "properties": {
+                "react-native-storybooks.port": {
+                    "type": "number",
+                    "default": 9001,
+                    "description": "Port number"
+                }
+            }
         }
     },
     "scripts": {
