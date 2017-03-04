@@ -37,6 +37,11 @@
                     "type": "number",
                     "default": 9001,
                     "description": "Port number"
+                },
+                "react-native-storybooks.host": {
+                    "type": "string",
+                    "default": "localhost",
+                    "description": "Host address"
                 }
             }
         }

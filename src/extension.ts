@@ -11,6 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
     class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
         public provideTextDocumentContent(uri: vscode.Uri): string {
             const port = vscode.workspace.getConfiguration('react-native-storybooks').get('port');
+            const host = vscode.workspace.getConfiguration('react-native-storybooks').get('host');
 
             return `
             <style>iframe {
@@ -24,8 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
             </style>
 
             <body onload="iframe.document.head.appendChild(ifstyle)" style="background-color:red;margin:0px;padding:0px;overflow:hidden">
-                <iframe src="http://localhost:${port}" frameborder="0"></iframe>
-                <p>If you're seeing this, something is wrong :) (can't find server on port ${port})</p>
+                <iframe src="http://${host}:${port}" frameborder="0"></iframe>
+                <p>If you're seeing this, something is wrong :) (can't find server at ${host}:${port})</p>
             </body>
             `
         }
