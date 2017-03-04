@@ -14,6 +14,7 @@ Once installed, open the command palette and do:
 
 ## Configuration
 
+ - `react-native-storybooks.host`: string (default: "localhost")
  - `react-native-storybooks.port`: number (default: 9001)
 
 ## Features
