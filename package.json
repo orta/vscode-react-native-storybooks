@@ -1,12 +1,17 @@
 {
     "name": "vscode-react-native-storybooks",
-    "displayName": "React Native Storybooks",
+    "displayName": "React Native Storybook",
     "description": "Show your React Native Storybooks inline in VS Code",
     "version": "1.0.0",
     "publisher": "Orta",
     "engines": {
         "vscode": "^1.13.0"
     },
+    "galleryBanner": {
+        "theme": "light",
+        "color": "#f1618c"
+    },
+    "icon": "icon.png",
     "categories": [
         "Other"
     ],
@@ -25,7 +30,6 @@
                 "command": "extension.restartConnectionToStorybooks",
                 "title": "Reconnect Storybook to VS Code"
             }
-
         ],
         "menus": {
             "editor/title": [
