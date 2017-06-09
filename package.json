@@ -31,6 +31,18 @@
                 "title": "Reconnect Storybook to VS Code"
             }
         ],
+        "keybindings": [
+            {
+                "command": "extension.goToNextStorybook",
+                "key": "ctrl+k up",
+                "mac": "cmd+k up"
+            },
+            {
+                "command": "extension.goToPreviousStorybook",
+                "key": "ctrl+k down",
+                "mac": "cmd+k down"
+            }
+        ],
         "menus": {
             "editor/title": [
                 {
@@ -41,7 +53,6 @@
                     "command": "extension.restartConnectionToStorybooks",
                     "when": "resourceLangId == javascript"
                 }
-
             ]
         },
         "configuration": {
@@ -61,10 +72,12 @@
             }
         },
         "views": {
-        "explorer": [{
-            "id": "storybook",
-            "name": "Storybook"
-        }]
+            "explorer": [
+                {
+                    "id": "storybook",
+                    "name": "Storybook"
+                }
+            ]
         }
     },
     "scripts": {

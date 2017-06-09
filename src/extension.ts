@@ -124,6 +124,34 @@ export function activate(context: vscode.ExtensionContext) {
       registerCallbacks(storybooksChannel);
     }
   );
+
+  // These are a bit alpha-y, as I don't think I can control what is showing as selected inside the VS Code UI
+  vscode.commands.registerCommand("extension.goToNextStorybook", () => {
+    const stories = storiesProvider.stories
+    const currentSection = stories.find(s => s.kind === currentKind)
+    const currentStories = currentSection.stories
+    const currentIndex = currentStories.indexOf(currentStory)
+    if (currentIndex === currentStories.length){
+      // go around or something
+      vscode.commands.executeCommand("extension.openStory", currentSection, currentStories[0])
+    } else {
+      vscode.commands.executeCommand("extension.openStory", currentSection, currentStories[currentIndex+1])
+    }
+  })
+
+  vscode.commands.registerCommand("extension.goToPreviousStorybook", () => {
+    const stories = storiesProvider.stories
+    const currentSection = stories.find(s => s.kind === currentKind)
+    const currentStories = currentSection.stories
+    const currentIndex = currentStories.indexOf(currentStory)
+    if (currentIndex === 0){
+      // go around or something
+      vscode.commands.executeCommand("extension.openStory", currentSection, currentStories[currentStories.length -1])
+
+    } else {
+      vscode.commands.executeCommand("extension.openStory", currentSection, currentStories[currentIndex-1])
+    }
+  })
 }
 
 export function deactivate() {
