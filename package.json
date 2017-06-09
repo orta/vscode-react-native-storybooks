@@ -2,7 +2,7 @@
     "name": "vscode-react-native-storybooks",
     "displayName": "React Native Storybook",
     "description": "Show your React Native Storybooks inline in VS Code",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "publisher": "Orta",
     "engines": {
         "vscode": "^1.13.0"
