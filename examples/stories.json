@@ -1,0 +1,126 @@
+{
+  "stories": [
+    {
+      "kind": "Artsy Typography",
+      "stories": [
+        "App Headline",
+        "App Serif Text"
+      ]
+    },
+    {
+      "kind": "Artsy Buttons",
+      "stories": [
+        "Flat White",
+        "Inverted Button",
+        "Navigation Button"
+      ]
+    },
+    {
+      "kind": "Artist",
+      "stories": [
+        "Glenn Brown",
+        "Leda Catunda",
+        "Jorge Vigil",
+        "Rita Maas"
+      ]
+    },
+    {
+      "kind": "Gene",
+      "stories": [
+        "Contemporary Pop",
+        "Kawaii",
+        "Popular Culture",
+        "Related to Film"
+      ]
+    },
+    {
+      "kind": "My Account",
+      "stories": [
+        "Root"
+      ]
+    },
+    {
+      "kind": "Artist Articles",
+      "stories": [
+        "Single Item",
+        "Multiple Items"
+      ]
+    },
+    {
+      "kind": "Artist Header",
+      "stories": [
+        "Real Artist - Glenn Brown",
+        "Real Artist - Leda Catunda",
+        "No Birthday",
+        "Full Data"
+      ]
+    },
+    {
+      "kind": "Consignments",
+      "stories": [
+        "Welcome Page",
+        "Overview Page"
+      ]
+    },
+    {
+      "kind": "Consignments - Type",
+      "stories": [
+        "Type Reference",
+        "blank"
+      ]
+    },
+    {
+      "kind": "Consignments - Search",
+      "stories": [
+        "No query",
+        "Looking for new results",
+        "Found no results",
+        "Found one result",
+        "Found one result, and searching",
+        "Found two results",
+        "Found four results"
+      ]
+    },
+    {
+      "kind": "Consignments - bottom aligned",
+      "stories": [
+        "With a Text element",
+        "With an Artist Search Results Component"
+      ]
+    },
+    {
+      "kind": "Consignments - TODO",
+      "stories": [
+        "Empty Metadata",
+        "With Artist",
+        "With Photos",
+        "With Metadata",
+        "With Location",
+        "With Provenance",
+        "With Just Metadata",
+        "With One",
+        "With Long"
+      ]
+    },
+    {
+      "kind": "Conversations - Composer",
+      "stories": [
+        "With no pre-existing thread"
+      ]
+    },
+    {
+      "kind": "Conversations - Snippet",
+      "stories": [
+        "Single row",
+        "A few threads"
+      ]
+    },
+    {
+      "kind": "Conversations - Inbox",
+      "stories": [
+        "With live data",
+        "With dummy data"
+      ]
+    }
+  ]
+}

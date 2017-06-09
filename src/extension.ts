@@ -1,19 +1,27 @@
-/*---------------------------------------------------------
- * Copyright (C) Microsoft Corporation. All rights reserved.
- *--------------------------------------------------------*/
-'use strict';
+import createChannel from "@storybook/channel-websocket";
+import * as vscode from "vscode";
 
-import * as vscode from 'vscode';
+import * as WebSocket from "ws";
+const g = global as any;
+g.WebSocket = WebSocket;
+
+import { StoryTreeProvider } from "./tree-provider";
+
+var storybooksChannel: any;
 
 export function activate(context: vscode.ExtensionContext) {
+  let previewUri = vscode.Uri.parse("storybook://authority/preview");
+  class TextDocumentContentProvider
+    implements vscode.TextDocumentContentProvider {
+    public provideTextDocumentContent(uri: vscode.Uri): string {
+      const port = vscode.workspace
+        .getConfiguration("react-native-storybooks")
+        .get("port");
+      const host = vscode.workspace
+        .getConfiguration("react-native-storybooks")
+        .get("host");
 
-    let previewUri = vscode.Uri.parse('storybook://authority/preview');
-    class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
-        public provideTextDocumentContent(uri: vscode.Uri): string {
-            const port = vscode.workspace.getConfiguration('react-native-storybooks').get('port');
-            const host = vscode.workspace.getConfiguration('react-native-storybooks').get('host');
-
-            return `
+      return `
             <style>iframe {
                 position: fixed;
                 border: none;
@@ -28,23 +36,85 @@ export function activate(context: vscode.ExtensionContext) {
                 <iframe src="http://${host}:${port}" frameborder="0"></iframe>
                 <p>If you're seeing this, something is wrong :) (can't find server at ${host}:${port})</p>
             </body>
-            `
-        }
+            `;
     }
+  }
 
-    let provider = new TextDocumentContentProvider();
-    let registration = vscode.workspace.registerTextDocumentContentProvider('storybook', provider);
+  let provider = new TextDocumentContentProvider();
+  let registration = vscode.workspace.registerTextDocumentContentProvider(
+    "storybook",
+    provider
+  );
 
-    // Registers the storyboards command to trigger a new HTML preview which hosts the storybook server 
-    let disposable = vscode.commands.registerCommand('extension.showStorybookPreview', () => {
-        return vscode.commands.executeCommand('vscode.previewHtml', previewUri, vscode.ViewColumn.Two, 'Storybooks').then((success) => {
-        }, (reason) => {
+  const storiesProvider = new StoryTreeProvider();
+  vscode.window.registerTreeDataProvider("storybook", storiesProvider);
+
+  // Registers the storyboards command to trigger a new HTML preview which hosts the storybook server
+  let disposable = vscode.commands.registerCommand(
+    "extension.showStorybookPreview",
+    () => {
+      return vscode.commands
+        .executeCommand(
+          "vscode.previewHtml",
+          previewUri,
+          vscode.ViewColumn.Two,
+          "Storybooks"
+        )
+        .then(
+          success => {},
+          reason => {
             vscode.window.showErrorMessage(reason);
-        });
-    });
+          }
+        );
+    }
+  );
 
-    context.subscriptions.push(disposable, registration);
+  context.subscriptions.push(disposable, registration);
+
+  const host = vscode.workspace
+    .getConfiguration("react-native-storybooks")
+    .get("host");
+  const port = vscode.workspace
+    .getConfiguration("react-native-storybooks")
+    .get("port");
+
+  storybooksChannel = createChannel({ url: `ws://${host}:${port}` });
+  var currentKind: string = null;
+  var currentStory: string = null;
+
+  // Called when we get stories from the RN client
+  storybooksChannel.on("setStories", data => {
+    storiesProvider.stories = data.stories;
+    storiesProvider.refresh();
+  });
+
+
+  // When the server in RN starts up, it asks what should be default
+  storybooksChannel.on("getCurrentStory", () => {
+    setTimeout(() => {
+      storybooksChannel.emit("setCurrentStory", {
+        kind: currentKind,
+        story: currentStory
+      });
+    }, 30);
+  });
+
+  // The React Native server has closed
+  storybooksChannel._transport._socket.onclose = () => {
+    storiesProvider.stories = [];
+    storiesProvider.refresh();
+  };
+
+  // Allow clicking, and keep state on what is selected
+  vscode.commands.registerCommand("extension.openStory", (section, story) => {
+    currentKind = section.kind;
+    currentStory = story;
+    storybooksChannel.emit("setCurrentStory", { kind: section.kind, story });
+  });
+
+  storybooksChannel.emit("getStories");
 }
 
 export function deactivate() {
+  storybooksChannel._transport._socket.close();
 }

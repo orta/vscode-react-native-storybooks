@@ -5,17 +5,18 @@
     "version": "1.0.0",
     "publisher": "Orta",
     "engines": {
-        "vscode": "^1.5.0"
+        "vscode": "^1.13.0"
     },
     "categories": [
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.showStorybookPreview"
+        "onCommand:extension.showStorybookPreview",
+        "workspaceContains:node_modules/@storybook/react-native/package.json"
     ],
     "main": "./out/src/extension",
     "contributes": {
-       "commands": [
+        "commands": [
             {
                 "command": "extension.showStorybookPreview",
                 "title": "Show Storybooks"
@@ -44,6 +45,12 @@
                     "description": "Host address"
                 }
             }
+        },
+        "views": {
+        "explorer": [{
+            "id": "storybook",
+            "name": "Storybook"
+        }]
         }
     },
     "scripts": {
@@ -52,10 +59,15 @@
         "postinstall": "node ./node_modules/vscode/bin/install"
     },
     "devDependencies": {
-        "typescript": "^2.0.3",
-        "vscode": "^1.0.0",
-        "mocha": "^2.3.3",
+        "@types/mocha": "^2.2.32",
         "@types/node": "^6.0.40",
-        "@types/mocha": "^2.2.32"
+        "mocha": "^2.3.3",
+        "typescript": "^2.3.4",
+        "vscode": "^1.0.0"
+    },
+    "dependencies": {
+        "@storybook/channel-websocket": "^3.0.0",
+        "babel-runtime": "^6.23.0",
+        "ws": "^3.0.0"
     }
 }
