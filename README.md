@@ -17,6 +17,8 @@ If your react-native server crashes, use the command "Reconnect Storybook to VS 
  - `react-native-storybooks.host`: string (default: "localhost")
  - `react-native-storybooks.port`: number (default: 9001)
 
+You can either change these in your user settings, or per-project you can create a `.vscode/settings.json` file and add them there.
+
 ## Known Issues
 
 Nothing critical ATM.
