@@ -19,8 +19,6 @@ export class StoryTreeProvider implements vscode.TreeDataProvider<Dependency> {
 	}
 
 	refresh(): void {
-    console.log("Refresh")
-
 		this._onDidChangeTreeData.fire();
 	}
 

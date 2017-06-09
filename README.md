@@ -10,6 +10,8 @@ Install it, ensure that the configuration is right. You should see a new section
 
 🎉
 
+If your react-native server crashes, use the command "Reconnect Storybook to VS Code" to re-connect.
+
 ## Configuration
 
  - `react-native-storybooks.host`: string (default: "localhost")

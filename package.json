@@ -19,15 +19,25 @@
         "commands": [
             {
                 "command": "extension.showStorybookPreview",
-                "title": "Show Storybooks"
+                "title": "Show Storybook tab"
+            },
+            {
+                "command": "extension.restartConnectionToStorybooks",
+                "title": "Reconnect Storybook to VS Code"
             }
+
         ],
         "menus": {
             "editor/title": [
                 {
                     "command": "extension.showStorybookPreview",
                     "when": "resourceLangId == javascript"
+                },
+                {
+                    "command": "extension.restartConnectionToStorybooks",
+                    "when": "resourceLangId == javascript"
                 }
+
             ]
         },
         "configuration": {

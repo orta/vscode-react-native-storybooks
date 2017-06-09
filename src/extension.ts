@@ -82,37 +82,48 @@ export function activate(context: vscode.ExtensionContext) {
   var currentKind: string = null;
   var currentStory: string = null;
 
-  // Called when we get stories from the RN client
-  storybooksChannel.on("setStories", data => {
-    storiesProvider.stories = data.stories;
-    storiesProvider.refresh();
-  });
+  // So when we re-connect, callbacks can happen on the new socket connection
+  const registerCallbacks = channel => {
+    // Called when we get stories from the RN client
+    channel.on("setStories", data => {
+      storiesProvider.stories = data.stories;
+      storiesProvider.refresh();
+    });
 
+    // When the server in RN starts up, it asks what should be default
+    channel.on("getCurrentStory", () => {
+      setTimeout(() => {
+        storybooksChannel.emit("setCurrentStory", {
+          kind: currentKind,
+          story: currentStory
+        });
+      }, 30);
+    });
 
-  // When the server in RN starts up, it asks what should be default
-  storybooksChannel.on("getCurrentStory", () => {
-    setTimeout(() => {
-      storybooksChannel.emit("setCurrentStory", {
-        kind: currentKind,
-        story: currentStory
-      });
-    }, 30);
-  });
+    // The React Native server has closed
+    channel._transport._socket.onclose = () => {
+      storiesProvider.stories = [];
+      storiesProvider.refresh();
+    };
 
-  // The React Native server has closed
-  storybooksChannel._transport._socket.onclose = () => {
-    storiesProvider.stories = [];
-    storiesProvider.refresh();
+    channel.emit("getStories");
   };
+  registerCallbacks(storybooksChannel);
 
   // Allow clicking, and keep state on what is selected
   vscode.commands.registerCommand("extension.openStory", (section, story) => {
     currentKind = section.kind;
     currentStory = story;
-    storybooksChannel.emit("setCurrentStory", { kind: section.kind, story });
+    const currentChannel = () => storybooksChannel;
+    currentChannel().emit("setCurrentStory", { kind: section.kind, story });
   });
 
-  storybooksChannel.emit("getStories");
+  vscode.commands.registerCommand(
+    "extension.restartConnectionToStorybooks", () => {
+      storybooksChannel = createChannel({ url: `ws://${host}:${port}` });
+      registerCallbacks(storybooksChannel);
+    }
+  );
 }
 
 export function deactivate() {
