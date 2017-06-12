@@ -63,12 +63,20 @@ export function activate(context: vscode.ExtensionContext) {
   var currentKind: string = null
   var currentStory: string = null
 
+  // Create a statusbar item to reconnect, when we lose connection
+  const reconnectStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left)
+  reconnectStatusBarItem.command = "extension.restartConnectionToStorybooks"
+  reconnectStatusBarItem.text = "Reconnect Storybooks"
+  reconnectStatusBarItem.color = "#FF8989"
+  reconnectStatusBarItem.hide()
+
   // So when we re-connect, callbacks can happen on the new socket connection
   const registerCallbacks = channel => {
     // Called when we get stories from the RN client
     channel.on("setStories", data => {
       storiesProvider.stories = data.stories
       storiesProvider.refresh()
+      reconnectStatusBarItem.hide()
     })
 
     // When the server in RN starts up, it asks what should be default
@@ -83,6 +91,7 @@ export function activate(context: vscode.ExtensionContext) {
     channel._transport._socket.onclose = () => {
       storiesProvider.stories = []
       storiesProvider.refresh()
+      reconnectStatusBarItem.show()
     }
 
     channel.emit("getStories")
