@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
-interface Story {
+export interface Story {
   kind: string
   stories: string[]
 }

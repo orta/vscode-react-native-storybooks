@@ -68,6 +68,11 @@
                     "type": "string",
                     "default": "localhost",
                     "description": "Host address"
+                },
+                "react-native-storybooks.storyRegex": {
+                    "type": "string",
+                    "default": "**/*.story.*",
+                    "description": "A regular expression that picks up story files in your project"
                 }
             }
         },

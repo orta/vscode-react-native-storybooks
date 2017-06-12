@@ -10,5 +10,9 @@
     "spellchecker.ignoreRegExp": [
         "CHANGELOG.md",
         "README.md"
-    ]
+    ],
+    "editor.formatOnSave": true,
+    "prettier.semi": false,
+    "prettier.singleQuote": false,
+    "prettier.printWidth": 120
 }

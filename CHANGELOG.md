@@ -1,3 +1,7 @@
+### 2.2.0
+
+Double clicking on a story will open it in your editor - orta
+
 ### 2.1.0
 
 Adds keybindings for going up/down through the set of stories, this only loops in the same section.
