@@ -1,3 +1,7 @@
+### 2.2.1
+
+Disconnecting from the storybooks server will show a button to reconnect on the status bar - mennenia
+
 ### 2.2.0
 
 Double clicking on a story will open it in your editor - orta
