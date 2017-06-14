@@ -23,8 +23,13 @@ If your react-native server crashes, use the command "Reconnect Storybook to VS 
 -   `react-native-storybooks.host`: string (default: `"localhost"`)
 -   `react-native-storybooks.port`: number (default: `9001`)
 -   `react-native-storybooks.storyRegex`: string (default: `"**/*.story.*"`)
+-   `react-native-storybooks.storybookFilterRegex`: string (default: `"."`)
 
 You can either change these in your user settings, or per-project you can create a `.vscode/settings.json` file and add them there.
+
+## Filtering
+
+If you work with quite a lot of stories in a project, it can be a bit of a chore to scroll through them all, so you can use setting `react-native-storybooks.storybookFilterRegex` to filter down the shown stories. If you do this on your user settings then only you will see the changes.
 
 ## Known Issues
 
