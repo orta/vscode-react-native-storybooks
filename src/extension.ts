@@ -74,7 +74,10 @@ export function activate(context: vscode.ExtensionContext) {
   const registerCallbacks = channel => {
     // Called when we get stories from the RN client
     channel.on("setStories", data => {
-      storiesProvider.stories = data.stories
+      const filter = vscode.workspace.getConfiguration("react-native-storybooks").get("storybookFilterRegex") as string
+      const regex = new RegExp(filter)
+      const stories = data.stories.filter(s => s.kind.match(regex))
+      storiesProvider.stories = stories
       storiesProvider.refresh()
       reconnectStatusBarItem.hide()
     })

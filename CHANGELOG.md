@@ -1,3 +1,7 @@
+### 2.3.0
+
+New setting: `react-native-storybooks.storybookFilterRegex` - this Regex is applied against every storybook section to decide whether to show it or not. Giving you the chance to filter your stories when you use it in your user settings. - orta
+
 ### 2.2.1
 
 Disconnecting from the storybooks server will show a button to reconnect on the status bar - mennenia

@@ -2,7 +2,7 @@
     "name": "vscode-react-native-storybooks",
     "displayName": "React Native Storybook",
     "description": "Show your React Native Storybooks inline in VS Code",
-    "version": "2.2.1",
+    "version": "2.3.0",
     "publisher": "Orta",
     "engines": {
         "vscode": "^1.13.0"
@@ -73,6 +73,11 @@
                     "type": "string",
                     "default": "**/*.story.*",
                     "description": "A regular expression that picks up story files in your project"
+                },
+                "react-native-storybooks.storybookFilterRegex": {
+                    "type": "string",
+                    "default": ".",
+                    "description": "A regular expression for filtering what stories to show in the sidebar"
                 }
             }
         },
