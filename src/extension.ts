@@ -156,6 +156,14 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.commands.executeCommand("extension.openStory", currentSection, currentStories[currentIndex - 1])
     }
   })
+
+  vscode.commands.registerCommand("extension.expandAllStories", () => {
+    storiesProvider.expandAll();
+  })
+
+  vscode.commands.registerCommand("extension.collapseAllStories", () => {
+    storiesProvider.collapseAll()
+  })
 }
 
 // Loop through all globbed stories,

@@ -29,6 +29,14 @@
             {
                 "command": "extension.restartConnectionToStorybooks",
                 "title": "Reconnect Storybook to VS Code"
+            },
+            {
+                "command": "extension.expandAllStories",
+                "title": "Expand stories in Storybook Explorer"
+            },
+            {
+                "command": "extension.collapseAllStories",
+                "title": "Collapse stories in Storybook Explorer"
             }
         ],
         "keybindings": [

@@ -3,19 +3,31 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export interface Story {
-  kind: string
-  stories: string[]
+	kind: string
+	stories: string[]
 }
 
 export class StoryTreeProvider implements vscode.TreeDataProvider<Dependency> {
 
 	private _onDidChangeTreeData: vscode.EventEmitter<Dependency | undefined> = new vscode.EventEmitter<Dependency | undefined>();
 	readonly onDidChangeTreeData: vscode.Event<Dependency | undefined> = this._onDidChangeTreeData.event;
-  
-  stories: Story[]
+
+	stories: Story[]
+	initialCollapsibleState: number
 
 	constructor() {
 		this.stories = []
+		this.initialCollapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+	}
+
+	collapseAll(): void {
+		this.initialCollapsibleState = vscode.TreeItemCollapsibleState.Collapsed;
+		this.refresh();
+	}
+
+	expandAll(): void {
+		this.initialCollapsibleState = vscode.TreeItemCollapsibleState.Expanded;
+		this.refresh();
 	}
 
 	refresh(): void {
