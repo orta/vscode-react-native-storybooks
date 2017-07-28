@@ -1,3 +1,7 @@
+### 2.3.1
+
+Key bindings are scoped to only run inside the editor - orta
+
 ### 2.3.0
 
 New setting: `react-native-storybooks.storybookFilterRegex` - this Regex is applied against every storybook section to decide whether to show it or not. Giving you the chance to filter your stories when you use it in your user settings. - orta

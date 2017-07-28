@@ -1,118 +1,119 @@
 {
-    "name": "vscode-react-native-storybooks",
-    "displayName": "React Native Storybook",
-    "description": "Show your React Native Storybooks inline in VS Code",
-    "version": "2.3.0",
-    "publisher": "Orta",
-    "engines": {
-        "vscode": "^1.13.0"
-    },
-    "galleryBanner": {
-        "theme": "light",
-        "color": "#f1618c"
-    },
-    "icon": "icon.png",
-    "categories": [
-        "Other"
+  "name": "vscode-react-native-storybooks",
+  "displayName": "React Native Storybook",
+  "description": "Show your React Native Storybooks inline in VS Code",
+  "version": "2.3.1",
+  "publisher": "Orta",
+  "engines": {
+    "vscode": "^1.13.0"
+  },
+  "galleryBanner": {
+    "theme": "light",
+    "color": "#f1618c"
+  },
+  "icon": "icon.png",
+  "categories": ["Other"],
+  "activationEvents": [
+    "onCommand:extension.showStorybookPreview",
+    "workspaceContains:node_modules/@storybook/react-native/package.json"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.showStorybookPreview",
+        "title": "Show Storybook tab"
+      },
+      {
+        "command": "extension.restartConnectionToStorybooks",
+        "title": "Reconnect Storybook to VS Code"
+      },
+      {
+        "command": "extension.expandAllStories",
+        "title": "Expand stories in Storybook Explorer"
+      },
+      {
+        "command": "extension.collapseAllStories",
+        "title": "Collapse stories in Storybook Explorer"
+      }
     ],
-    "activationEvents": [
-        "onCommand:extension.showStorybookPreview",
-        "workspaceContains:node_modules/@storybook/react-native/package.json"
+    "keybindings": [
+      {
+        "command": "extension.goToNextStorybook",
+        "key": "ctrl+k up",
+        "mac": "cmd+k up",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "extension.goToPreviousStorybook",
+        "key": "ctrl+k down",
+        "mac": "cmd+k down",
+        "when": "editorTextFocus"
+      }
     ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "extension.showStorybookPreview",
-                "title": "Show Storybook tab"
-            },
-            {
-                "command": "extension.restartConnectionToStorybooks",
-                "title": "Reconnect Storybook to VS Code"
-            },
-            {
-                "command": "extension.expandAllStories",
-                "title": "Expand stories in Storybook Explorer"
-            },
-            {
-                "command": "extension.collapseAllStories",
-                "title": "Collapse stories in Storybook Explorer"
-            }
-        ],
-        "keybindings": [
-            {
-                "command": "extension.goToNextStorybook",
-                "key": "ctrl+k up",
-                "mac": "cmd+k up"
-            },
-            {
-                "command": "extension.goToPreviousStorybook",
-                "key": "ctrl+k down",
-                "mac": "cmd+k down"
-            }
-        ],
-        "menus": {
-            "editor/title": [
-                {
-                    "command": "extension.showStorybookPreview",
-                    "when": "resourceLangId == javascript"
-                },
-                {
-                    "command": "extension.restartConnectionToStorybooks",
-                    "when": "resourceLangId == javascript"
-                }
-            ]
+    "menus": {
+      "editor/title": [
+        {
+          "command": "extension.showStorybookPreview",
+          "when": "resourceLangId == javascript"
         },
-        "configuration": {
-            "type": "object",
-            "title": "Configuration",
-            "properties": {
-                "react-native-storybooks.port": {
-                    "type": "number",
-                    "default": 9001,
-                    "description": "Port number"
-                },
-                "react-native-storybooks.host": {
-                    "type": "string",
-                    "default": "localhost",
-                    "description": "Host address"
-                },
-                "react-native-storybooks.storyRegex": {
-                    "type": "string",
-                    "default": "**/*.story.*",
-                    "description": "A regular expression that picks up story files in your project"
-                },
-                "react-native-storybooks.storybookFilterRegex": {
-                    "type": "string",
-                    "default": ".",
-                    "description": "A regular expression for filtering what stories to show in the sidebar"
-                }
-            }
-        },
-        "views": {
-            "explorer": [
-                {
-                    "id": "storybook",
-                    "name": "Storybook"
-                }
-            ]
+        {
+          "command": "extension.restartConnectionToStorybooks",
+          "when": "resourceLangId == javascript"
         }
+      ]
     },
-    "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
+    "configuration": {
+      "type": "object",
+      "title": "Configuration",
+      "properties": {
+        "react-native-storybooks.port": {
+          "type": "number",
+          "default": 9001,
+          "description": "Port number"
+        },
+        "react-native-storybooks.host": {
+          "type": "string",
+          "default": "localhost",
+          "description": "Host address"
+        },
+        "react-native-storybooks.storyRegex": {
+          "type": "string",
+          "default": "**/*.story.*",
+          "description": "A regular expression that picks up story files in your project"
+        },
+        "react-native-storybooks.storybookFilterRegex": {
+          "type": "string",
+          "default": ".",
+          "description": "A regular expression for filtering what stories to show in the sidebar"
+        }
+      }
     },
-    "devDependencies": {
-        "@types/mocha": "^2.2.32",
-        "@types/node": "^6.0.40",
-        "mocha": "^2.3.3",
-        "typescript": "^2.3.4",
-        "vscode": "^1.0.0"
-    },
-    "dependencies": {
-        "@storybook/channel-websocket": "^3.0.0",
-        "babel-runtime": "^6.23.0",
-        "ws": "^3.0.0"
+    "views": {
+      "explorer": [
+        {
+          "id": "storybook",
+          "name": "Storybook",
+          "when": ""
+        }
+      ]
     }
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.32",
+    "@types/node": "^6.0.40",
+    "mocha": "^2.3.3",
+    "typescript": "^2.3.4",
+    "vscode": "^1.0.0"
+  },
+  "dependencies": {
+    "@storybook/channel-websocket": "^3.0.0",
+    "babel-runtime": "^6.23.0",
+    "ws": "^3.0.0"
+  }
 }
