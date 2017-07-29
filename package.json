@@ -21,6 +21,10 @@
   "contributes": {
     "commands": [
       {
+        "command": "extension.searchStories",
+        "title": "Storybook search / picker"
+      },
+      {
         "command": "extension.showStorybookPreview",
         "title": "Show Storybook tab"
       },
@@ -48,6 +52,12 @@
         "command": "extension.goToPreviousStorybook",
         "key": "ctrl+k down",
         "mac": "cmd+k down",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "extension.searchStories",
+        "key": "ctrl+k s",
+        "mac": "cmd+k s",
         "when": "editorTextFocus"
       }
     ],
