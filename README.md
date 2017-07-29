@@ -17,6 +17,7 @@ If your react-native server crashes, use the command "Reconnect Storybook to VS 
 -   Connect to the React Native storybooks web socket.
 -   Single click a story to open it in your simulator.
 -   Double click to open story in your editor.
+-   Search / picker for quick story activation
 
 ## Configuration
 
@@ -30,6 +31,12 @@ You can either change these in your user settings, or per-project you can create
 ## Filtering
 
 If you work with quite a lot of stories in a project, it can be a bit of a chore to scroll through them all, so you can use setting `react-native-storybooks.storybookFilterRegex` to filter down the shown stories. If you do this on your user settings then only you will see the changes.
+
+You can also access the quick picker menu with:
+* the `Storybook search / picker` command; or
+* via shortcuts:
+  * `CTRL+K S` on Windows
+  * `CMD+K S` on Mac
 
 ## Known Issues
 
