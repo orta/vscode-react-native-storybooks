@@ -1,8 +1,6 @@
 import * as vscode from 'vscode'
 import { Story, StoryTreeProvider } from './tree-provider'
 
-const delimiter = ' - '
-
 export interface StorySelection {
   kind: string
   story: string
