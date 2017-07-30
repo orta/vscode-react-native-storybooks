@@ -1,5 +1,5 @@
-import * as vscode from 'vscode'
-import { Story, StoryTreeProvider } from './tree-provider'
+import * as vscode from "vscode"
+import { Story, StoryTreeProvider } from "./tree-provider"
 
 export interface StorySelection {
   kind: string
@@ -10,7 +10,7 @@ export class StoryPickerProvider {
   stories: Story[]
   storyList: string[]
 
-  public static delimiter = ' - '
+  public static delimiter = " - "
 
   constructor(storiesProvider: StoryTreeProvider) {
     storiesProvider.onDidChangeTreeData(story => {
@@ -28,7 +28,7 @@ export class StoryPickerProvider {
     if (!this.stories) return
     const unsorted = this.stories.reduce((list, section) => {
       const group = section.kind
-      const stories = section.stories.map(story => `${group}${delimiter}${story}`)
+      const stories = section.stories.map(story => `${group}${StoryPickerProvider.delimiter}${story}`)
       return list.concat(stories)
     }, [])
 
@@ -39,4 +39,3 @@ export class StoryPickerProvider {
     return this.flattenStories()
   }
 }
-
