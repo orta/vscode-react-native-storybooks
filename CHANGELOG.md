@@ -1,3 +1,11 @@
+### 2.4.0
+
+You can also access the quick picker menu for stories - sterlingwes 
+* the `Storybook search / picker` command; or
+* via shortcuts:
+  * `CTRL+K S` on Windows
+  * `CMD+K S` on Mac
+
 ### 2.3.1
 
 Key bindings are scoped to only run inside the editor - orta
