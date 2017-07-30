@@ -9,6 +9,7 @@ import * as glob from "glob"
 import * as fs from "fs"
 
 import { StoryTreeProvider, Story } from "./tree-provider"
+import { StoryPickerProvider, StorySelection } from "./picker-provider"
 
 var storybooksChannel: any
 
@@ -44,10 +45,12 @@ export function activate(context: vscode.ExtensionContext) {
   const storiesProvider = new StoryTreeProvider()
   vscode.window.registerTreeDataProvider("storybook", storiesProvider)
 
+  const pickerProvider = new StoryPickerProvider(storiesProvider)
+
   // Registers the storyboards command to trigger a new HTML preview which hosts the storybook server
   let disposable = vscode.commands.registerCommand("extension.showStorybookPreview", () => {
     return vscode.commands.executeCommand("vscode.previewHtml", previewUri, vscode.ViewColumn.Two, "Storybooks").then(
-      success => {},
+      success => { },
       reason => {
         vscode.window.showErrorMessage(reason)
       }
@@ -101,6 +104,14 @@ export function activate(context: vscode.ExtensionContext) {
   }
   registerCallbacks(storybooksChannel)
 
+  vscode.commands.registerCommand("extension.searchStories", () => {
+    vscode.window.showQuickPick(pickerProvider.toList())
+      .then((picked: string) => {
+        const setParams = pickerProvider.getParts(picked)
+        setCurrentStory(setParams)
+      })
+  })
+
   // Allow clicking, and keep state on what is selected
   vscode.commands.registerCommand("extension.openStory", (section, story) => {
     // Handle a Double click
@@ -121,9 +132,13 @@ export function activate(context: vscode.ExtensionContext) {
 
     currentKind = section.kind
     currentStory = story
-    const currentChannel = () => storybooksChannel
-    currentChannel().emit("setCurrentStory", { kind: section.kind, story })
+    setCurrentStory({ kind: section.kind, story })
   })
+
+  function setCurrentStory(params: StorySelection) {
+    const currentChannel = () => storybooksChannel
+    currentChannel().emit("setCurrentStory", params)
+  }
 
   vscode.commands.registerCommand("extension.restartConnectionToStorybooks", () => {
     storybooksChannel = createChannel({ url: `ws://${host}:${port}` })
