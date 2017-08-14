@@ -130,13 +130,13 @@ export function activate(context: vscode.ExtensionContext) {
       return
     }
 
-    currentKind = section.kind
-    currentStory = story
     setCurrentStory({ kind: section.kind, story })
   })
 
   function setCurrentStory(params: StorySelection) {
     const currentChannel = () => storybooksChannel
+    currentKind = params.kind
+    currentStory = params.story
     currentChannel().emit("setCurrentStory", params)
   }
 
