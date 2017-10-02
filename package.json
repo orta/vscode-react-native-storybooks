@@ -2,7 +2,7 @@
   "name": "vscode-react-native-storybooks",
   "displayName": "React Native Storybook",
   "description": "Show your React Native Storybooks inline in VS Code",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "publisher": "Orta",
   "engines": {
     "vscode": "^1.13.0"
@@ -65,13 +65,11 @@
       "editor/title": [
         {
           "command": "extension.showStorybookPreview",
-          "when": "is-running-storybooks-vscode",
-          "group": "navigation"
+          "when": "is-running-storybooks-vscode"
         },
         {
           "command": "extension.restartConnectionToStorybooks",
-          "when": "is-running-storybooks-vscode",
-          "group": "navigation"
+          "when": "is-running-storybooks-vscode"
         }
       ]
     },
