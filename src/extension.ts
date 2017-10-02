@@ -12,8 +12,11 @@ import { StoryTreeProvider, Story } from "./tree-provider"
 import { StoryPickerProvider, StorySelection } from "./picker-provider"
 
 var storybooksChannel: any
+var connectedOnce = false
 
 export function activate(context: vscode.ExtensionContext) {
+  vscode.commands.executeCommand("setContext", "is-running-storybooks-vscode", true)
+
   let previewUri = vscode.Uri.parse("storybook://authority/preview")
   class TextDocumentContentProvider implements vscode.TextDocumentContentProvider {
     public provideTextDocumentContent(uri: vscode.Uri): string {
@@ -50,7 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
   // Registers the storyboards command to trigger a new HTML preview which hosts the storybook server
   let disposable = vscode.commands.registerCommand("extension.showStorybookPreview", () => {
     return vscode.commands.executeCommand("vscode.previewHtml", previewUri, vscode.ViewColumn.Two, "Storybooks").then(
-      success => { },
+      success => {},
       reason => {
         vscode.window.showErrorMessage(reason)
       }
@@ -69,8 +72,13 @@ export function activate(context: vscode.ExtensionContext) {
   // Create a statusbar item to reconnect, when we lose connection
   const reconnectStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left)
   reconnectStatusBarItem.command = "extension.restartConnectionToStorybooks"
-  reconnectStatusBarItem.text = "Reconnect Storybooks"
-  reconnectStatusBarItem.color = "#FF8989"
+  if (connectedOnce) {
+    reconnectStatusBarItem.text = "Reconnect Storybooks"
+    reconnectStatusBarItem.color = "#FF8989"
+  } else {
+    reconnectStatusBarItem.text = "Connect to Storybooks"
+  }
+
   reconnectStatusBarItem.hide()
 
   // So when we re-connect, callbacks can happen on the new socket connection
@@ -105,11 +113,10 @@ export function activate(context: vscode.ExtensionContext) {
   registerCallbacks(storybooksChannel)
 
   vscode.commands.registerCommand("extension.searchStories", () => {
-    vscode.window.showQuickPick(pickerProvider.toList())
-      .then((picked: string) => {
-        const setParams = pickerProvider.getParts(picked)
-        setCurrentStory(setParams)
-      })
+    vscode.window.showQuickPick(pickerProvider.toList()).then((picked: string) => {
+      const setParams = pickerProvider.getParts(picked)
+      setCurrentStory(setParams)
+    })
   })
 
   // Allow clicking, and keep state on what is selected
@@ -173,7 +180,7 @@ export function activate(context: vscode.ExtensionContext) {
   })
 
   vscode.commands.registerCommand("extension.expandAllStories", () => {
-    storiesProvider.expandAll();
+    storiesProvider.expandAll()
   })
 
   vscode.commands.registerCommand("extension.collapseAllStories", () => {

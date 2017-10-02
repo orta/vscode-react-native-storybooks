@@ -1,3 +1,9 @@
+### 2.5.0
+
+Don't show the storybook panel when you're not in a React Native storybook project - orta
+Show "connect" instead of "reconnect" when it cannot instantly connect on launch - orta
+
+
 ### 2.4.0
 
 You can also access the quick picker menu for stories - sterlingwes 

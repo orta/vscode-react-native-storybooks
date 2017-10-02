@@ -2,7 +2,7 @@
   "name": "vscode-react-native-storybooks",
   "displayName": "React Native Storybook",
   "description": "Show your React Native Storybooks inline in VS Code",
-  "version": "2.4.1",
+  "version": "2.5.0",
   "publisher": "Orta",
   "engines": {
     "vscode": "^1.13.0"
@@ -15,7 +15,7 @@
   "categories": ["Other"],
   "activationEvents": [
     "onCommand:extension.showStorybookPreview",
-    "workspaceContains:node_modules/@storybook/react-native/package.json"
+    "workspaceContains:**/node_modules/@storybook/react-native/package.json"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -46,30 +46,32 @@
         "command": "extension.goToNextStorybook",
         "key": "ctrl+k up",
         "mac": "cmd+k up",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && is-running-storybooks-vscode"
       },
       {
         "command": "extension.goToPreviousStorybook",
         "key": "ctrl+k down",
         "mac": "cmd+k down",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && is-running-storybooks-vscode"
       },
       {
         "command": "extension.searchStories",
         "key": "ctrl+k s",
         "mac": "cmd+k s",
-        "when": "editorTextFocus"
+        "when": "editorTextFocus && is-running-storybooks-vscode"
       }
     ],
     "menus": {
       "editor/title": [
         {
           "command": "extension.showStorybookPreview",
-          "when": "resourceLangId == javascript"
+          "when": "is-running-storybooks-vscode",
+          "group": "navigation"
         },
         {
           "command": "extension.restartConnectionToStorybooks",
-          "when": "resourceLangId == javascript"
+          "when": "is-running-storybooks-vscode",
+          "group": "navigation"
         }
       ]
     },
@@ -104,7 +106,7 @@
         {
           "id": "storybook",
           "name": "Storybook",
-          "when": ""
+          "when": "is-running-storybooks-vscode"
         }
       ]
     }
