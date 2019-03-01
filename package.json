@@ -11,6 +11,10 @@
     "theme": "light",
     "color": "#f1618c"
   },
+  "repository": {
+    "type": "git",
+		"url": "https://github.com/orta/vscode-react-native-storybooks.git"
+  },
   "icon": "icon.png",
   "categories": ["Other"],
   "activationEvents": [
