@@ -15,6 +15,7 @@ var storybooksChannel: any
 var connectedOnce = false
 
 export function activate(context: vscode.ExtensionContext) {
+  console.log("Started storybooks")
   vscode.commands.executeCommand("setContext", "is-running-storybooks-vscode", true)
 
   let previewUri = vscode.Uri.parse("storybook://authority/preview")
@@ -146,6 +147,11 @@ export function activate(context: vscode.ExtensionContext) {
     currentStory = params.story
     currentChannel().emit("setCurrentStory", params)
   }
+
+  vscode.commands.registerCommand("extension.connectToStorybooks", () => {
+    storybooksChannel = createChannel({ url: `ws://${host}:${port}` })
+    registerCallbacks(storybooksChannel)
+  })
 
   vscode.commands.registerCommand("extension.restartConnectionToStorybooks", () => {
     storybooksChannel = createChannel({ url: `ws://${host}:${port}` })

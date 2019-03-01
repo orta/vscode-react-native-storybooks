@@ -1,3 +1,7 @@
+### 2.6.0
+
+- Adds a connect to storybook command, and allows it to launch the extension - orta
+
 ### 2.5.0
 
 - Don't show the storybook panel when you're not in a React Native storybook project - orta
