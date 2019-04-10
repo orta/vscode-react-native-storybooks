@@ -97,9 +97,9 @@ export function activate(context: vscode.ExtensionContext) {
           const story = data.stories[key]
           if (story.kind.match(regex)) {
             if (kinds[story.kind] == undefined) {
-              kinds[story.kind] = [story.story]
+              kinds[story.kind] = [story.name]
             } else {
-              kinds[story.kind].push(story.story)
+              kinds[story.kind].push(story.name)
             }
           }
         })
