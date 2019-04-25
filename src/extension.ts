@@ -88,7 +88,28 @@ export function activate(context: vscode.ExtensionContext) {
     channel.on("setStories", data => {
       const filter = vscode.workspace.getConfiguration("react-native-storybooks").get("storybookFilterRegex") as string
       const regex = new RegExp(filter)
-      const stories = data.stories.filter(s => s.kind.match(regex))
+      let stories: Story[] = []
+      if (Array.isArray(data.stories)) {
+        stories = data.stories.filter(s => s.kind.match(regex))
+      } else {
+        let kinds: { [key: string]: string[] } = {}
+        Object.keys(data.stories).forEach(function(key) {
+          const story = data.stories[key]
+          if (story.kind.match(regex)) {
+            if (kinds[story.kind] == undefined) {
+              kinds[story.kind] = [story.name]
+            } else {
+              kinds[story.kind].push(story.name)
+            }
+          }
+        })
+        Object.keys(kinds).forEach(function(key) {
+          stories.push({
+            kind: key,
+            stories: kinds[key]
+          })
+        })
+      }
       storiesProvider.stories = stories
       storiesProvider.refresh()
       reconnectStatusBarItem.hide()
