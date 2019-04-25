@@ -1,3 +1,8 @@
+### 2.7.0
+
+- Storybooks 5.a support
+- Default port changed
+
 ### 2.6.0
 
 - Adds a connect to storybook command, and allows it to launch the extension - orta
