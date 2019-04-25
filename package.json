@@ -91,7 +91,7 @@
       "properties": {
         "react-native-storybooks.port": {
           "type": "number",
-          "default": 9001,
+          "default": 7007,
           "description": "Port number"
         },
         "react-native-storybooks.host": {

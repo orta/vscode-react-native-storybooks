@@ -22,7 +22,7 @@ If your react-native server crashes, use the command "Reconnect Storybook to VS 
 ## Configuration
 
 -   `react-native-storybooks.host`: string (default: `"localhost"`)
--   `react-native-storybooks.port`: number (default: `9001`)
+-   `react-native-storybooks.port`: number (default: `7007`)
 -   `react-native-storybooks.storyRegex`: string (default: `"**/*.story.*"`)
 -   `react-native-storybooks.storybookFilterRegex`: string (default: `"."`)
 
