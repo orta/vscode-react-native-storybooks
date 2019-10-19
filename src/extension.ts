@@ -8,7 +8,7 @@ g.WebSocket = WebSocket
 import * as glob from "glob"
 import * as fs from "fs"
 
-import { StoryTreeProvider, Story } from "./tree-provider"
+import { StoryTreeProvider, StoryObj, Story } from "./tree-provider"
 import { StoryPickerProvider, StorySelection } from "./picker-provider"
 
 var storybooksChannel: any
@@ -66,9 +66,10 @@ export function activate(context: vscode.ExtensionContext) {
   const host = vscode.workspace.getConfiguration("react-native-storybooks").get("host")
   const port = vscode.workspace.getConfiguration("react-native-storybooks").get("port")
 
-  storybooksChannel = createChannel({ url: `ws://${host}:${port}` })
+  storybooksChannel = createChannel({ url: `ws://${host}:${port}`, async: true, onError: () => {} })
   var currentKind: string = null
   var currentStory: string = null
+  var currentStoryId: string = null
 
   // Create a statusbar item to reconnect, when we lose connection
   const reconnectStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left)
@@ -90,16 +91,35 @@ export function activate(context: vscode.ExtensionContext) {
       const regex = new RegExp(filter)
       let stories: Story[] = []
       if (Array.isArray(data.stories)) {
-        stories = data.stories.filter(s => s.kind.match(regex))
+        let kinds: { [key: string]: StoryObj[] } = {}
+        const storydata = data.stories.filter(s => s.kind.match(regex))
+
+        storydata.map(story => {
+          story.stories.map(singleStory => {
+            if (kinds[story.kind] == undefined) {
+              // kinds[story.kind] = [story.name]
+              kinds[story.kind] = [{ name: singleStory, id: singleStory }]
+            } else {
+              kinds[story.kind].push({ name: singleStory, id: singleStory })
+            }
+          })
+        })
+        Object.keys(kinds).forEach(function(key) {
+          stories.push({
+            kind: key,
+            stories: kinds[key]
+          })
+        })
       } else {
-        let kinds: { [key: string]: string[] } = {}
+        let kinds: { [key: string]: StoryObj[] } = {}
         Object.keys(data.stories).forEach(function(key) {
           const story = data.stories[key]
           if (story.kind.match(regex)) {
             if (kinds[story.kind] == undefined) {
-              kinds[story.kind] = [story.name]
+              // kinds[story.kind] = [story.name]
+              kinds[story.kind] = [{ name: story.name, id: story.id }]
             } else {
-              kinds[story.kind].push(story.name)
+              kinds[story.kind].push({ name: story.name, id: story.id })
             }
           }
         })
@@ -118,13 +138,12 @@ export function activate(context: vscode.ExtensionContext) {
     // When the server in RN starts up, it asks what should be default
     channel.on("getCurrentStory", () => {
       storybooksChannel.emit("setCurrentStory", {
-        kind: currentKind,
-        story: currentStory
+        storyId: currentStoryId
       })
     })
 
     // The React Native server has closed
-    channel._transport._socket.onclose = () => {
+    channel.transport.socket.onclose = () => {
       storiesProvider.stories = []
       storiesProvider.refresh()
       reconnectStatusBarItem.show()
@@ -144,8 +163,8 @@ export function activate(context: vscode.ExtensionContext) {
   // Allow clicking, and keep state on what is selected
   vscode.commands.registerCommand("extension.openStory", (section, story) => {
     // Handle a Double click
-    if (currentKind === section.kind && currentStory === story) {
-      findFileForStory(section, story).then(results => {
+    if (currentStoryId === story.id && currentKind === section.kind && currentStory === story.name) {
+      findFileForStory(section.kind, story.name).then(results => {
         if (results) {
           vscode.workspace.openTextDocument(results.uri).then(doc => {
             vscode.window.showTextDocument(doc).then(shownDoc => {
@@ -159,23 +178,24 @@ export function activate(context: vscode.ExtensionContext) {
       return
     }
 
-    setCurrentStory({ kind: section.kind, story })
+    setCurrentStory({ storyId: story.id, kind: section.kind, story: story.name })
   })
 
   function setCurrentStory(params: StorySelection) {
     const currentChannel = () => storybooksChannel
     currentKind = params.kind
     currentStory = params.story
+    currentStoryId = params.storyId
     currentChannel().emit("setCurrentStory", params)
   }
 
   vscode.commands.registerCommand("extension.connectToStorybooks", () => {
-    storybooksChannel = createChannel({ url: `ws://${host}:${port}` })
+    storybooksChannel = createChannel({ url: `ws://${host}:${port}`, async: true, onError: () => {} })
     registerCallbacks(storybooksChannel)
   })
 
   vscode.commands.registerCommand("extension.restartConnectionToStorybooks", () => {
-    storybooksChannel = createChannel({ url: `ws://${host}:${port}` })
+    storybooksChannel = createChannel({ url: `ws://${host}:${port}`, async: true, onError: () => {} })
     registerCallbacks(storybooksChannel)
   })
 
@@ -184,7 +204,7 @@ export function activate(context: vscode.ExtensionContext) {
     const stories = storiesProvider.stories
     const currentSection = stories.find(s => s.kind === currentKind)
     const currentStories = currentSection.stories
-    const currentIndex = currentStories.indexOf(currentStory)
+    const currentIndex = currentStories.map(e => e.id).indexOf(currentStoryId)
     if (currentIndex === currentStories.length) {
       // go around or something
       vscode.commands.executeCommand("extension.openStory", currentSection, currentStories[0])
@@ -197,7 +217,7 @@ export function activate(context: vscode.ExtensionContext) {
     const stories = storiesProvider.stories
     const currentSection = stories.find(s => s.kind === currentKind)
     const currentStories = currentSection.stories
-    const currentIndex = currentStories.indexOf(currentStory)
+    const currentIndex = currentStories.map(e => e.id).indexOf(currentStoryId)
     if (currentIndex === 0) {
       // go around or something
       vscode.commands.executeCommand("extension.openStory", currentSection, currentStories[currentStories.length - 1])
@@ -218,16 +238,16 @@ export function activate(context: vscode.ExtensionContext) {
 // Loop through all globbed stories,
 // reading the files for the kind and the story name
 
-const findFileForStory = async (section: Story, story: string): Promise<{ uri: vscode.Uri; line: number } | null> => {
+const findFileForStory = async (kind: string, story: string): Promise<{ uri: vscode.Uri; line: number } | null> => {
   return new Promise<{ uri: vscode.Uri; line: number }>((resolve, reject) => {
     const regex = vscode.workspace.getConfiguration("react-native-storybooks").get("storyRegex") as string
 
-    const root = vscode.workspace.rootPath
+    const root = vscode.workspace.workspaceFolders
     vscode.workspace.findFiles(regex, "**/node_modules").then(files => {
       let found = false
       for (const file of files) {
         const content = fs.readFileSync(file.fsPath, "utf8")
-        if (content.includes(section.kind) && content.includes(story)) {
+        if (content.includes(kind) && content.includes(story)) {
           const line = content.split(story)[0].split("\n").length
           resolve({ uri: file, line })
           found = true
@@ -241,5 +261,5 @@ const findFileForStory = async (section: Story, story: string): Promise<{ uri: v
 }
 
 export function deactivate() {
-  storybooksChannel._transport._socket.close()
+  storybooksChannel.transport.socket.close()
 }
