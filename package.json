@@ -5,7 +5,7 @@
   "version": "2.6.1",
   "publisher": "Orta",
   "engines": {
-    "vscode": "^1.22.0"
+    "vscode": "^1.30.0"
   },
   "galleryBanner": {
     "theme": "light",
