@@ -1,3 +1,7 @@
+### 2.7.1
+
+- Fixed breaking changes from storybook 5 & made it backward compatible - Manishalexin
+
 ### 2.7.0
 
 - Storybooks 5.a support
@@ -13,14 +17,14 @@
 
 - Show "connect" instead of "reconnect" when it cannot instantly connect on launch - orta
 
-
 ### 2.4.0
 
-You can also access the quick picker menu for stories - sterlingwes 
-* the `Storybook search / picker` command; or
-* via shortcuts:
-  * `CTRL+K S` on Windows
-  * `CMD+K S` on Mac
+You can also access the quick picker menu for stories - sterlingwes
+
+- the `Storybook search / picker` command; or
+- via shortcuts:
+  - `CTRL+K S` on Windows
+  - `CMD+K S` on Mac
 
 ### 2.3.1
 
@@ -28,7 +32,9 @@ Key bindings are scoped to only run inside the editor - orta
 
 ### 2.3.0
 
-New setting: `react-native-storybooks.storybookFilterRegex` - this Regex is applied against every storybook section to decide whether to show it or not. Giving you the chance to filter your stories when you use it in your user settings. - orta
+New setting: `react-native-storybooks.storybookFilterRegex` - this Regex is applied against every storybook section to
+decide whether to show it or not. Giving you the chance to filter your stories when you use it in your user settings. -
+orta
 
 ### 2.2.1
 
@@ -40,9 +46,9 @@ Double clicking on a story will open it in your editor - orta
 
 ### 2.1.0
 
-Adds keybindings for going up/down through the set of stories, this only loops in the same section.
-As I can't change the current selection inside the app, I'm not putting these in the README. You can 
-use `cmd + k, up` or `cmd + k, down` to change them. - orta
+Adds keybindings for going up/down through the set of stories, this only loops in the same section. As I can't change
+the current selection inside the app, I'm not putting these in the README. You can use `cmd + k, up` or `cmd + k, down`
+to change them. - orta
 
 ### 2.0.0
 
