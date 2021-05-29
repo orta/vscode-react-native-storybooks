@@ -140,6 +140,6 @@
   "dependencies": {
     "@storybook/channel-websocket": "5.2.4",
     "babel-runtime": "^6.26.0",
-    "ws": "^7.1.2"
+    "ws": "^7.4.6"
   }
 }
